@@ -1,0 +1,145 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Yu-Gi-Oh! Inventário</title><meta name="theme-color" content="#0d1320"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="ygo-app-version" content="8.0.0"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark;background:#0d1320;color:#eef2fc}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1120px;margin:auto;padding:22px}h1{font-size:clamp(24px,4vw,34px);margin:0}h2{font-size:19px;margin:0 0 15px}p,.muted{color:#a9b7d0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.panel{background:#182236;border:1px solid #34425d;border-radius:15px;padding:20px;margin:17px 0}.actions,.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}button{border:0;border-radius:9px;padding:11px 15px;font:inherit;font-weight:650;cursor:pointer;background:#7d9bff;color:#091329}button.secondary{background:#303f5d;color:#f1f5ff}button.danger{background:#633344;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}button.small{padding:6px 10px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}label{font-size:13px;color:#c9d4e8}input,select{width:100%;padding:11px 12px;background:#101a2c;color:#fff;border:1px solid #455674;border-radius:9px;font:inherit}input:focus,select:focus{outline:2px solid #7d9bff}.grid{display:grid;grid-template-columns:2fr 1.4fr 1.3fr .7fr;gap:11px}.toolbar input{flex:2;min-width:180px}.toolbar select{flex:1;min-width:155px}.note{font-size:13px;line-height:1.55}.stats{display:flex;gap:12px;flex-wrap:wrap;margin:17px 0}.stat{background:#202f49;padding:13px 17px;border-radius:12px;min-width:150px}.stat b{display:block;font-size:25px}.status{font-weight:700;color:#ffce78}.status.saved{color:#8cdda9}.hidden{display:none!important}.results{display:grid;gap:8px;max-height:300px;overflow:auto;margin:12px 0}.result{display:flex;gap:12px;align-items:center;background:#202d44;border:1px solid #3b4d6d;border-radius:10px;padding:9px}.result img,.thumb{width:43px;height:62px;object-fit:contain;background:#0c1321;border-radius:5px}.result .details{flex:1;min-width:0}.result strong{display:block}.result small{color:#aabbd4}.result button{flex-shrink:0}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th{text-align:left;font-size:13px;color:#aabbd4}td,th{padding:11px 8px;border-bottom:1px solid #34425b}td:first-child{width:65px}.qty{display:inline-block;min-width:35px;text-align:center;font-weight:700}.empty{text-align:center;padding:35px;color:#a9b7d0}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#334363;font-size:12px}.alert{background:#3c2c2d;border:1px solid #a95d5d;border-radius:9px;padding:11px}.ok{color:#95e0af}.export-status{font-size:13px;color:#a9b7d0;margin-top:10px;white-space:pre-wrap}.foot{font-size:12px;color:#9aacc8}a{color:#a8beff}@media(max-width:740px){.grid{grid-template-columns:1fr 1fr}.wrap{padding:13px}.panel{padding:14px}.grid .field:first-child{grid-column:1/-1}.result button{padding:9px}}@media(max-width:440px){.grid{grid-template-columns:1fr}.grid .field:first-child{grid-column:auto}}
+@media(max-width:680px){.wrap{padding:12px;padding-bottom:85px}.panel{padding:14px;margin:12px 0}.top{align-items:flex-start}.top p{font-size:13px}.grid{grid-template-columns:1fr 1fr}.grid .field:first-child{grid-column:1/-1}.actions button{flex:1}.toolbar{align-items:stretch}.toolbar input{flex-basis:100%}.toolbar button{flex:1}.stat{min-width:0;flex:1;padding:10px}.stat b{font-size:21px}.scroll{overflow:visible}table{min-width:0}thead{display:none}tbody{display:grid;gap:10px}tr{display:grid;grid-template-columns:55px minmax(0,1fr);gap:5px 12px;background:#202d44;border:1px solid #34425d;border-radius:12px;padding:10px}td{padding:2px;border:0;min-width:0;overflow-wrap:anywhere}td:first-child{grid-row:1/4}td:nth-child(2),td:nth-child(3),td:nth-child(4),td:nth-child(5){grid-column:2}td:nth-child(5) button{margin:3px}.result{flex-wrap:wrap}.result button{margin-left:auto}}
+</style></head><body><main class="wrap"><header class="top"><div><h1>🃏 Inventário Yu-Gi-Oh!</h1><p>Coleção salva automaticamente neste dispositivo. Importe ou exporte JSON quando quiser.</p></div><span id="status" class="status">Carregando coleção…</span></header>
+<section class="panel" id="start"><div class="actions"><button id="install" class="secondary hidden" type="button">📲 Instalar na tela inicial</button></div><h2>1. Minha coleção local</h2><div class="actions"><button id="open">📂 Importar / trocar JSON</button><button id="new" class="secondary">Nova coleção vazia</button><button id="export" class="secondary" disabled>⬇ Backup JSON</button></div><input type="file" id="file" accept=".json,application/json" class="hidden"><p class="note">As alterações são salvas automaticamente no armazenamento interno deste navegador (IndexedDB). Importar outro JSON substitui a coleção local. Exportar gera um backup; o arquivo JSON original nunca é modificado. Não limpe os dados do site sem fazer backup.</p><p id="filename" class="muted"></p></section>
+<div id="workspace" class="hidden"><div class="stats"><div class="stat">Cópias totais<b id="total">0</b></div><div class="stat">Edições distintas<b id="unique">0</b></div><div class="stat">Nomes distintos<b id="names">0</b></div></div>
+<section class="panel"><h2>2. Encontrar carta no YGOPRODeck</h2><div class="toolbar"><input id="apiSearch" type="search" placeholder="Digite o nome (ex.: Dark Magician)"><button id="lookup">Pesquisar cartas</button></div><p class="note">Consulta a API pública do YGOPRODeck e mostra as edições disponíveis. Requer internet; nomes oficiais normalmente são em inglês. A pesquisa busca correspondências parciais.</p><div id="apiMessage" role="status" class="note"></div><div id="results" class="results"></div></section>
+<section class="panel"><h2>3. Adicionar ao inventário</h2><form id="form"><div class="grid"><div class="field"><label for="name">Nome *</label><input id="name" required placeholder="Nome oficial"></div><div class="field"><label for="code">Código da edição *</label><input id="code" required placeholder="Ex.: LOB-001"></div><div class="field"><label for="rarity">Raridade</label><input id="rarity" placeholder="Ex.: Ultra Rare"></div><div class="field"><label for="amount">Quantidade *</label><input id="amount" type="number" min="1" step="1" value="1" required></div></div><div class="actions" style="margin-top:12px"><button type="submit">+ Adicionar</button><button type="reset" class="secondary">Limpar</button></div></form><p class="note">Ao selecionar uma edição no resultado da API, o formulário será preenchido. Também é possível cadastrar manualmente. Mesmo nome, código e raridade somam quantidades.</p></section>
+<section class="panel"><h2>4. Minha coleção</h2><div class="toolbar"><input id="search" type="search" placeholder="Filtrar por nome, código ou raridade"><select id="sort"><option value="name">Nome A–Z</option><option value="code">Código A–Z</option><option value="qty">Maior quantidade</option></select><button id="export2">⬇ Exportar JSON</button></div><div class="actions" style="margin-top:12px"><button id="exportTxt" class="secondary">📄 Exportar lista TXT</button><button id="exportPng" class="secondary">🖼 Exportar catálogo PNG</button></div><p id="exportStatus" class="export-status" role="status" aria-live="polite"></p><div class="scroll"><table><thead><tr><th>Imagem</th><th>Nome</th><th>Edição / raridade</th><th>Quantidade</th><th>Ações</th></tr></thead><tbody id="rows"></tbody></table></div><p class="note">✓ <strong>Salvamento automático ativado.</strong> A coleção reaparece ao abrir o app neste mesmo navegador. Exporte backups JSON periodicamente, especialmente antes de limpar dados do navegador ou trocar de celular.</p></section></div><footer class="foot">Dados das cartas: <a href="https://ygoprodeck.com/api-guide/" target="_blank" rel="noopener noreferrer">YGOPRODeck API</a>. Ferramenta independente, não afiliada à Konami ou YGOPRODeck.</footer></main>
+<script>
+(()=>{'use strict';const $=id=>document.getElementById(id),txt=(tag,value)=>{const e=document.createElement(tag);e.textContent=value;return e};let cards=[],loaded=false,dirty=false,filename='yugioh-inventario.json',results=[],saveChain=Promise.resolve(),db=null,storageReady=false,saveFailed=false;const norm=v=>String(v??'').trim().toLocaleLowerCase('pt-BR');const safeId=()=>globalThis.crypto?.randomUUID?.()||('id-'+Date.now()+'-'+Math.random().toString(36).slice(2));const valid=c=>c&&typeof c.name==='string'&&!!c.name.trim()&&typeof c.code==='string'&&!!c.code.trim()&&Number.isSafeInteger(c.qty)&&c.qty>0&&(!c.rarity||typeof c.rarity==='string');function updateStatus(){const e=$('status');e.textContent=!storageReady?'Carregando coleção…':saveFailed?'⚠ Falha ao salvar — exporte um backup':dirty?'● Salvando…':'✓ Salvo automaticamente';e.classList.toggle('saved',storageReady&&!dirty&&!saveFailed);$('export').disabled=!loaded;$('workspace').classList.toggle('hidden',!loaded);$('filename').textContent=loaded?'Coleção local: '+filename+' (JSON usado somente para importar/exportar)':''}
+function openDatabase(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window))return reject(Error('IndexedDB não disponível neste navegador.'));const req=indexedDB.open('ygo-inventario-local',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('data'))req.result.createObjectStore('data')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('Falha ao abrir banco de dados'))})}
+function readSaved(){return new Promise((resolve,reject)=>{const req=db.transaction('data','readonly').objectStore('data').get('collection');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+function writeSaved(snapshot){return new Promise((resolve,reject)=>{const tx=db.transaction('data','readwrite');tx.objectStore('data').put(snapshot,'collection');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('Transação interrompida'))})}
+function scheduleSave(){if(!db){saveFailed=true;updateStatus();return}dirty=true;updateStatus();const snapshot={filename,cards:structuredClone(cards),savedAt:new Date().toISOString()};saveChain=saveChain.catch(()=>{}).then(()=>writeSaved(snapshot)).then(()=>{saveFailed=false;dirty=false;updateStatus()}).catch(err=>{saveFailed=true;dirty=true;updateStatus();console.error('Erro ao salvar coleção:',err)});}
+function mark(){scheduleSave();render()}
+function openCards(arr,name,persist=true){if(!Array.isArray(arr)||!arr.every(valid))throw Error('O JSON precisa conter uma lista de cartas com name, code e qty válidos.');const merged=[];for(const c of arr){const key=norm(c.name)+'|'+norm(c.code)+'|'+norm(c.rarity);const old=merged.find(x=>x._key===key);if(old){old.qty+=c.qty;if(!Number.isSafeInteger(old.qty))throw Error('Quantidade excede o limite permitido.')}else merged.push({...c,id:typeof c.id==='string'?c.id:safeId(),name:c.name.trim(),code:c.code.trim().toUpperCase(),rarity:(c.rarity||'').trim(),_key:key})}cards=merged.map(({_key,...c})=>c);filename=name||'yugioh-inventario.json';loaded=true;dirty=false;updateStatus();render();if(persist)scheduleSave()}
+async function initialize(){try{db=await openDatabase();const saved=await readSaved();storageReady=true;if(saved&&Array.isArray(saved.cards)){openCards(saved.cards,saved.filename,false)}else{openCards([],'yugioh-inventario.json',true)}if(navigator.storage?.persist)navigator.storage.persist().catch(()=>{});updateStatus()}catch(err){storageReady=true;saveFailed=true;openCards([],'yugioh-inventario.json',false);updateStatus();alert('O salvamento automático não está disponível. Você ainda pode usar o inventário e exportar JSON, mas deve exportar antes de fechar. '+err.message)}}
+$('open').onclick=()=>$('file').click();$('file').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{const data=JSON.parse(await f.text());const arr=Array.isArray(data)?data:data?.cards;if(loaded&&!confirm('Substituir a coleção salva neste dispositivo pelo conteúdo de '+f.name+'? Exporte um backup antes se quiser preservar a coleção atual.'))return;openCards(arr,f.name)}catch(err){alert('Não foi possível abrir o JSON: '+err.message)}finally{e.target.value=''}};$('new').onclick=()=>{if(!confirm('Criar uma coleção vazia e substituir a coleção local? Exporte um backup antes se quiser preservar as cartas atuais.'))return;openCards([],'yugioh-inventario.json')};function download(){if(!loaded)return;const data={version:2,format:'yugioh-inventory',updatedAt:new Date().toISOString(),cards:cards.map(({id,name,code,rarity,qty,cardId,image,...extra})=>({id,name,code,rarity,qty,...(cardId?{cardId}:{}),...(image?{image}:{}),...extra}))};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=filename.toLowerCase().endsWith('.json')?filename:'yugioh-inventario.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);updateStatus()};$('export').onclick=download;$('export2').onclick=download;
+const fileBase=()=>filename.replace(/\.json$/i,'').replace(/[^a-z0-9_-]+/gi,'-').slice(0,70)||'yugioh-inventario';
+function saveBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+function exportTxt(){
+  if(!loaded)return;
+  const ordered=[...cards].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR')||a.code.localeCompare(b.code,'pt-BR'));
+  const lines=ordered.map(c=>`"${String(c.name||'').replace(/"/g,'\\"')}" ${c.code||'-'} x${c.qty}`);
+  saveBlob(new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/plain;charset=utf-8'}),fileBase()+'-lista.txt');
+  $('exportStatus').textContent='Lista TXT exportada com '+ordered.length+' edições.';
+}
+$('exportTxt').onclick=exportTxt;
+const pngStatus=t=>$('exportStatus').textContent=t;
+function wrapCanvas(ctx,str,maxWidth,maxLines=3){const words=String(str).split(/\s+/),lines=[];let line='';for(const word of words){const trial=line?line+' '+word:word;if(ctx.measureText(trial).width>maxWidth&&line){lines.push(line);line=word}else line=trial}if(line)lines.push(line);return lines.slice(0,maxLines).map((l,i)=>i===maxLines-1&&lines.length>maxLines?l.replace(/.$/,'…'):l)}
+// V6: compact visual catalog without header; card art uses CORS-aware fallback.
+const imageCache=new Map(),lookupCache=new Map();
+async function imageBitmapFromUrl(url){
+ if(!/^https:\/\//i.test(url||''))return null;
+ // Some card-image CDNs do not expose CORS headers to canvas. Try a CORS image proxy as fallback.
+ const candidates=[url];
+ if(/^https:\/\/(?:images\.ygoprodeck\.com|storage\.googleapis\.com)\//i.test(url)){
+   candidates.push('https://wsrv.nl/?url='+encodeURIComponent(url)+'&output=jpg');
+ }
+ for(const candidate of candidates){
+  try{
+   const res=await fetch(candidate,{mode:'cors',cache:'no-store'});
+   if(!res.ok)continue;
+   const blob=await res.blob();
+   if(!blob.type.startsWith('image/'))continue;
+   if(typeof createImageBitmap==='function')return await createImageBitmap(blob);
+   const objectUrl=URL.createObjectURL(blob);
+   try{const img=new Image();img.src=objectUrl;await img.decode();return img}
+   finally{URL.revokeObjectURL(objectUrl)}
+  }catch(e){console.warn('Falha na imagem:',candidate,e)}
+ }
+ return null;
+}
+async function resolveCardInfo(c){
+ const key=norm(c.name);if(lookupCache.has(key))return lookupCache.get(key);
+ const promise=(async()=>{try{
+ const url='https://db.ygoprodeck.com/api/v7/cardinfo.php?name='+encodeURIComponent(c.name);
+ const response=await fetch(url,{cache:'default'});if(!response.ok)return null;
+ const payload=await response.json();return payload?.data?.find(v=>norm(v.name)===key)||payload?.data?.[0]||null
+ }catch(e){console.warn('Não foi possível consultar a carta:',c.name,e);return null}})();
+ lookupCache.set(key,promise);return promise
+}
+async function getCardImage(c){
+ const key=String(c.cardId||'')+'|'+norm(c.name);if(imageCache.has(key))return imageCache.get(key);
+ const promise=(async()=>{
+ const ids=[c.cardId].filter(Boolean);let info=null;
+ // Prefer card ID image, which is consistent across sets of the same card.
+ const urls=[c.image];for(const id of ids){urls.push('https://images.ygoprodeck.com/images/cards/'+encodeURIComponent(id)+'.jpg');urls.push('https://images.ygoprodeck.com/images/cards_small/'+encodeURIComponent(id)+'.jpg')}
+ for(const url of urls){const img=await imageBitmapFromUrl(url);if(img)return img}
+ info=await resolveCardInfo(c);
+ if(info){const images=info.card_images||[];for(const entry of images){for(const url of [entry.image_url,entry.image_url_small]){const img=await imageBitmapFromUrl(url);if(img)return img}}}
+ return null
+ })();imageCache.set(key,promise);return promise
+}
+function compactLabel(ctx,value,maxWidth){let s=String(value||'');if(ctx.measureText(s).width<=maxWidth)return s;while(s.length>1&&ctx.measureText(s+'…').width>maxWidth)s=s.slice(0,-1);return s+'…'}
+async function exportPng(){
+ if(!loaded)return;if(!cards.length){pngStatus('Não há cartas para exportar.');return}
+ const btn=$('exportPng');btn.disabled=true;
+ const sorted=[...cards].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR')||a.code.localeCompare(b.code,'pt-BR'));
+ // Seven columns and six rows: readable on mobile when zoomed, compact like a binder spread.
+ const cols=7,perPage=42,cardW=156,cardH=228,labelH=49,gapX=8,gapY=12,pad=12,headerH=0;
+ const cellW=cardW+gapX,cellH=cardH+labelH+gapY,pages=Math.ceil(sorted.length/perPage);
+ let missing=0;try{
+ for(let page=0;page<pages;page++){
+ const group=sorted.slice(page*perPage,(page+1)*perPage),rows=Math.ceil(group.length/cols);
+ const canvas=document.createElement('canvas');canvas.width=pad*2+cols*cellW-gapX;canvas.height=headerH+rows*cellH+pad;
+ const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas não disponível');
+ ctx.fillStyle='#f3f4f6';ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ for(let i=0;i<group.length;i++){
+ const c=group[i],x=pad+(i%cols)*cellW,y=headerH+Math.floor(i/cols)*cellH;
+ pngStatus('Página '+(page+1)+'/'+pages+': carregando fotos '+(i+1)+'/'+group.length+'…');
+ const img=await getCardImage(c);
+ if(img){const scale=Math.min(cardW/img.width,cardH/img.height);const w=img.width*scale,h=img.height*scale;ctx.drawImage(img,x+(cardW-w)/2,y+(cardH-h)/2,w,h)}
+ else{missing++;ctx.fillStyle='#dbe0e7';ctx.fillRect(x,y,cardW,cardH);ctx.fillStyle='#596273';ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillText('Imagem indisponível',x+cardW/2,y+cardH/2);ctx.textAlign='left'}
+ ctx.fillStyle='#1e293b';ctx.font='bold 11px system-ui';ctx.fillText(compactLabel(ctx,c.name,cardW-4),x,y+cardH+15);
+ ctx.fillStyle='#48566a';ctx.font='11px system-ui';ctx.fillText(compactLabel(ctx,c.code,cardW-42),x,y+cardH+31);
+ ctx.fillStyle='#20252e';ctx.font='bold 12px system-ui';ctx.textAlign='right';ctx.fillText('×'+c.qty,x+cardW,y+cardH+31);ctx.textAlign='left';
+ }
+ pngStatus('Salvando imagem '+(page+1)+' de '+pages+'…');
+ const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Falha ao gerar PNG')),'image/png'));
+ saveBlob(blob,fileBase()+'-catalogo-'+String(page+1).padStart(2,'0')+'.png');
+ }
+ pngStatus('Catálogo exportado: '+pages+' PNG(s), uma imagem por edição.'+(missing?' '+missing+' foto(s) não puderam ser carregadas. Verifique a conexão e os dados das cartas.':''));
+ }catch(err){pngStatus('Erro ao exportar PNG: '+err.message)}finally{btn.disabled=false}
+}
+$('exportPng').onclick=exportPng;
+function add(name,code,rarity,qty,cardId,image){const old=cards.find(c=>norm(c.name)===norm(name)&&norm(c.code)===norm(code)&&norm(c.rarity)===norm(rarity));if(old){if(!Number.isSafeInteger(old.qty+qty))return alert('Quantidade muito alta.');old.qty+=qty;if(!old.image&&image)old.image=image;if(!old.cardId&&cardId)old.cardId=cardId}else cards.push({id:safeId(),name:name.trim(),code:code.trim().toUpperCase(),rarity:rarity.trim(),qty,...(cardId?{cardId}:{}),...(image?{image}:{})});mark()}let selected=null;$('form').onsubmit=e=>{e.preventDefault();const name=$('name').value.trim(),code=$('code').value.trim(),rarity=$('rarity').value.trim(),qty=Number($('amount').value);if(!name||!code||!Number.isSafeInteger(qty)||qty<1)return alert('Informe nome, código e quantidade válida.');add(name,code,rarity,qty,selected?.name===name&&selected?.code===code?selected.cardId:null,selected?.name===name&&selected?.code===code?selected.image:null);e.target.reset();selected=null};$('form').onreset=()=>selected=null;
+function render(){const q=norm($('search').value);$('total').textContent=cards.reduce((n,c)=>n+c.qty,0).toLocaleString('pt-BR');$('unique').textContent=cards.length;$('names').textContent=new Set(cards.map(c=>norm(c.name))).size;const shown=cards.filter(c=>norm(c.name+' '+c.code+' '+c.rarity).includes(q));const sort=$('sort').value;shown.sort((a,b)=>sort==='qty'?b.qty-a.qty||a.name.localeCompare(b.name):String(a[sort]).localeCompare(String(b[sort]),'pt-BR'));const body=$('rows');body.replaceChildren();if(!shown.length){const tr=document.createElement('tr'),td=txt('td',cards.length?'Nenhuma carta encontrada.':'Inventário vazio. Pesquise ou cadastre uma carta.');td.colSpan=5;td.className='empty';tr.append(td);body.append(tr)}for(const c of shown){const tr=document.createElement('tr'),pic=document.createElement('td');if(c.image&&/^https:\/\//.test(c.image)){const img=document.createElement('img');img.className='thumb';img.loading='lazy';img.referrerPolicy='no-referrer';img.src=c.image;img.alt='';pic.append(img)}tr.append(pic,txt('td',c.name));const edition=document.createElement('td');edition.append(txt('strong',c.code));if(c.rarity)edition.append(txt('div',c.rarity));tr.append(edition);const qty=document.createElement('td'),minus=txt('button','−'),plus=txt('button','+');minus.className=plus.className='small secondary';minus.setAttribute('aria-label','Retirar uma cópia');plus.setAttribute('aria-label','Adicionar uma cópia');minus.onclick=()=>{if(c.qty===1){if(!confirm('Remover a última cópia desta edição?'))return;cards=cards.filter(x=>x!==c)}else c.qty--;mark()};plus.onclick=()=>{if(!Number.isSafeInteger(c.qty+1))return;c.qty++;mark()};const number=txt('span',c.qty);number.className='qty';qty.append(minus,number,plus);tr.append(qty);const action=document.createElement('td'),del=txt('button','Excluir');del.className='small danger';del.onclick=()=>{if(confirm('Excluir todas as cópias desta edição?')){cards=cards.filter(x=>x!==c);mark()}};action.append(del);tr.append(action);body.append(tr)}}$('search').oninput=render;$('sort').onchange=render;
+function choose(card,edition){$('name').value=card.name;$('code').value=edition.set_code;$('rarity').value=edition.set_rarity||'';selected={name:card.name,code:edition.set_code,cardId:card.id,image:card.card_images?.[0]?.image_url_small||''};$('amount').value=1;$('form').scrollIntoView({behavior:'smooth',block:'center'});$('amount').focus()}function showResults(data){const root=$('results');root.replaceChildren();const list=data.slice(0,40);if(data.length>40)$('apiMessage').textContent=`${data.length} cartas encontradas. Exibindo as primeiras 40; refine sua busca.`;for(const c of list){const editions=Array.isArray(c.card_sets)?c.card_sets:[];const row=document.createElement('div');row.className='result';const img=document.createElement('img');img.alt='';img.loading='lazy';img.src=c.card_images?.[0]?.image_url_small||'';row.append(img);const detail=document.createElement('div');detail.className='details';detail.append(txt('strong',c.name),txt('small',`${c.type||'Carta'} · ${editions.length} edições disponíveis`));const select=document.createElement('select');select.setAttribute('aria-label','Escolher edição de '+c.name);if(!editions.length){const opt=document.createElement('option');opt.textContent='Sem edição disponível na API';select.append(opt);select.disabled=true}else for(const [i,s] of editions.entries()){const opt=document.createElement('option');opt.value=i;opt.textContent=`${s.set_code} · ${s.set_rarity||'Sem raridade'} · ${s.set_name||''}`;select.append(opt)}detail.append(select);row.append(detail);const btn=txt('button','Selecionar');btn.className='small';btn.disabled=!editions.length;btn.onclick=()=>choose(c,editions[Number(select.value)]);row.append(btn);root.append(row)}}
+let controller=null;async function lookup(){const q=$('apiSearch').value.trim();if(q.length<2)return $('apiMessage').textContent='Digite pelo menos 2 caracteres.';controller?.abort();controller=new AbortController();$('lookup').disabled=true;$('apiMessage').textContent='Consultando YGOPRODeck...';$('results').replaceChildren();try{const url='https://db.ygoprodeck.com/api/v7/cardinfo.php?fname='+encodeURIComponent(q);const response=await fetch(url,{signal:controller.signal});if(!response.ok){if(response.status===400||response.status===404){$('apiMessage').textContent='Nenhuma carta encontrada.';return}throw Error('HTTP '+response.status)}const json=await response.json();results=Array.isArray(json.data)?json.data:[];$('apiMessage').textContent=results.length?`${results.length} carta(s) encontrada(s). Escolha a edição.`:'Nenhuma carta encontrada.';showResults(results)}catch(err){if(err.name!=='AbortError')$('apiMessage').textContent='Não foi possível consultar a API. Verifique sua conexão ou tente servir este HTML em um servidor local. Você ainda pode cadastrar manualmente.'}finally{$('lookup').disabled=false}}$('lookup').onclick=lookup;$('apiSearch').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();lookup()}};let installPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('install').classList.remove('hidden')});$('install').onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('install').classList.add('hidden')};// V8: verifica a versao publicada em cada abertura e ao retornar ao app.
+const APP_VERSION='8.0.0';
+let checkingVersion=false, lastVersionCheck=0, updateInProgress=false;
+const compareVersion=(a,b)=>{const aa=String(a).split('.').map(x=>parseInt(x,10)||0),bb=String(b).split('.').map(x=>parseInt(x,10)||0);for(let i=0;i<Math.max(aa.length,bb.length);i++){if((aa[i]||0)!==(bb[i]||0))return (aa[i]||0)-(bb[i]||0)}return 0};
+async function checkForUpdates(force=false){
+ if(checkingVersion||updateInProgress||!navigator.onLine)return;
+ if(!force&&Date.now()-lastVersionCheck<60000)return;
+ checkingVersion=true;lastVersionCheck=Date.now();
+ try{
+  const response=await fetch('./version.json?check='+Date.now(),{cache:'no-store'});
+  if(!response.ok)return;
+  const remote=await response.json();
+  if(!remote||typeof remote.version!=='string'||compareVersion(remote.version,APP_VERSION)<=0)return;
+  updateInProgress=true;
+  const message=document.createElement('div');message.setAttribute('role','status');message.textContent='Nova versão disponível. Atualizando aplicativo…';Object.assign(message.style,{position:'fixed',bottom:'12px',left:'12px',right:'12px',padding:'14px',background:'#243c65',color:'#fff',zIndex:'9999',borderRadius:'10px',textAlign:'center'});document.body.append(message);
+  // A atualizacao nao mexe no IndexedDB. Espera escritas pendentes antes de recarregar.
+  await saveChain.catch(()=>{});
+  if('serviceWorker' in navigator){
+   const reg=await navigator.serviceWorker.getRegistration();
+   if(reg){await reg.update();if(reg.waiting)reg.waiting.postMessage({type:'SKIP_WAITING'});}
+  }
+  // Requisicao nova com cache bypass para evitar reutilizar o HTML antigo.
+  const target=new URL('./index.html',location.href);target.searchParams.set('appVersion',remote.version);
+  location.replace(target.href);
+ }catch(err){console.warn('Verificacao de atualizacao indisponivel:',err);updateInProgress=false}
+ finally{checkingVersion=false}
+}
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+ navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(()=>checkForUpdates(true)).catch(()=>checkForUpdates(true));
+}else if(location.protocol.startsWith('http'))checkForUpdates(true);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForUpdates()});
+window.addEventListener('online',()=>checkForUpdates(true));
+initialize()})();
+</script></body></html>
